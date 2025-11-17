@@ -1271,6 +1271,20 @@ wheels = [
 ]
 
 [[package]]
+name = "tigramite"
+version = "5.2.8.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "scipy" },
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7f/82/ec206c68f999e709e243a78f1566815534b7b77d8f554dca98678612866d/tigramite-5.2.8.2.tar.gz", hash = "sha256:bfc28bbb94fbff0306b8cdd0c9d4bac3fa9d34cfacf4c0ad94b405343797019e", size = 315167, upload-time = "2025-08-06T23:16:22.647Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a3/ed/5a3a78658f375285f4b801e1abea47e60d01aa801b05b5d61afc17ea0f32/tigramite-5.2.8.2-py3-none-any.whl", hash = "sha256:4b7426a85040e7b63f314d24c316857238a3fd168f4142f5cbc79d0b0b8a90b9", size = 311270, upload-time = "2025-08-06T23:16:20.909Z" },
+]
+
+[[package]]
 name = "torch"
 version = "2.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1407,6 +1421,7 @@ dependencies = [
     { name = "scikit-learn" },
     { name = "scipy" },
     { name = "statsmodels" },
+    { name = "tigramite" },
     { name = "torch" },
     { name = "torchdiffeq" },
 ]
@@ -1421,6 +1436,7 @@ requires-dist = [
     { name = "scikit-learn", specifier = ">=1.7.2" },
     { name = "scipy", specifier = ">=1.16.1" },
     { name = "statsmodels", specifier = ">=0.14.5" },
+    { name = "tigramite", specifier = ">=5.2.8.2" },
     { name = "torch", specifier = ">=2.8.0" },
     { name = "torchdiffeq", specifier = ">=0.2.5" },
 ]
