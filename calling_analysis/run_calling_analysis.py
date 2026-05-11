@@ -341,6 +341,7 @@ def make_effect_plot(
     base = {}
     orig_exog = result.model.data.orig_exog
     if predictor not in orig_exog.columns:
+        LOGGER.warning("Skipping effect plot for %s; predictor not in model.", predictor)
         return
     if "hour" in orig_exog.columns:
         base["hour"] = _reference_value(df["hour"])
@@ -455,13 +456,20 @@ def write_summary_report(
     def table_block(df: pd.DataFrame, index: bool = True) -> str:
         return "```\n" + df.to_string(index=index) + "\n```"
 
+    def format_stat(value: float, fmt: str) -> str:
+        if value is None or (isinstance(value, float) and np.isnan(value)):
+            return "n/a"
+        return format(value, fmt)
+
     lines = [
         "# Calling analysis summary",
         "",
         "## Data quality",
         table_block(qa_summary, index=False),
         "",
-        f"Temperature-humidity correlation (n={correlation['n']}): r={correlation['r']:.3f}, p={correlation['p_value']:.3g}",
+        "Temperature-humidity correlation "
+        f"(n={correlation['n']}): r={format_stat(correlation['r'], '.3f')}, "
+        f"p={format_stat(correlation['p_value'], '.3g')}",
         "",
         "## Day vs night calling (means)",
         table_block(day_night_summary),
@@ -470,15 +478,16 @@ def write_summary_report(
         table_block(effort_summary),
         "",
         "### Wilcoxon signed-rank test",
-        f"n={wilcoxon_result['n']}, statistic={wilcoxon_result['statistic']}, p={wilcoxon_result['p_value']}",
+        f"n={wilcoxon_result['n']}, statistic={format_stat(wilcoxon_result['statistic'], '.3f')}, "
+        f"p={format_stat(wilcoxon_result['p_value'], '.3g')}",
         "",
         "## Results summary",
         f"- Richness model selected by AIC: {model_choices.get('richness', 'n/a')}",
         f"- Any-calling model selected by AIC: {model_choices.get('any_calling', 'n/a')}",
         f"- Species 1 presence model selected by AIC: {model_choices.get('species1_presence', 'n/a')}",
         f"- Species 2 presence model selected by AIC: {model_choices.get('species2_presence', 'n/a')}",
-        f"- Daily effort (paired days): species1 mean={effort_summary.loc['mean', 'species1']:.2f}, "
-        f"species2 mean={effort_summary.loc['mean', 'species2']:.2f}",
+        f"- Daily effort (paired days): species1 mean={format_stat(effort_summary.loc['mean', 'species1'], '.2f')}, "
+        f"species2 mean={format_stat(effort_summary.loc['mean', 'species2'], '.2f')}",
         "",
         "## Selected models (AIC)",
     ]
